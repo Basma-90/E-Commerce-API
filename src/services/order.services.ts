@@ -144,5 +144,22 @@ export const getOrdersByStatusService = async (status: string) => {
 
 };
 
+export const orderCountService = async () => {
+    try {
+        return await Order.countDocuments();
+    } catch (error) {
+        throw new Error(`Failed to fetch order count: ${error.message}`);
+    }
+};
 
+export const totalSalesService = async () => {
+    try {
+        const totalSales = await Order.aggregate([
+            { $group: { _id: null, totalSales: { $sum: '$totalPrice' } } },
+        ]);
+        return totalSales[0].totalSales;
+    } catch (error) {
+        throw new Error(`Failed to fetch total sales: ${error.message}`);
+    }
+}
 

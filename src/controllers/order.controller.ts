@@ -6,7 +6,9 @@ import {
     getOrderService,
     getOrdersService,
     getOrdersByUserService,
-    getOrdersByStatusService
+    getOrdersByStatusService,
+    orderCountService,
+    totalSalesService
 } from '../services/order.services';
 
 export const createOrder = async (req: Request, res: Response): Promise<void> => {
@@ -86,3 +88,22 @@ export const getOrdersByStatus = async (req: Request, res: Response): Promise<vo
     }
 };
 
+export const orderCountController = async (req: Request, res: Response): Promise<void> => {
+        try{
+            const orderCount = await orderCountService();
+            res.status(200).json(orderCount);
+        }catch(err:any){
+            console.error('Error fetching order count:', err);
+            res.status(500).json({ error: err.message });
+        }
+    }
+
+export const totalSalesController = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const totalSales = await totalSalesService();
+        res.status(200).json(totalSales);
+    } catch (error: any) {
+        console.error('Error fetching total sales:', error);
+        res.status(500).json({ error: error.message });
+    }
+};
